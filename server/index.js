@@ -152,10 +152,11 @@ app.post("/addPaket", (req, res) => {
   const lama_cuci = req.body.lamaCuci;
   const harga = req.body.harga;
   const diskon = req.body.diskon;
+  const flag = req.body.flag;
 
   db.query(
-    "INSERT INTO paket (nama_paket, lama_cuci, harga, diskon) VALUES (?,?,?,?)",
-    [nama_paket, lama_cuci, harga, diskon],
+    "INSERT INTO paket (nama_paket, lama_cuci, harga, diskon, flag) VALUES (?,?,?,?,?)",
+    [nama_paket, lama_cuci, harga, diskon, flag],
     async (err, result) => {
       if (err) {
         console.log(err);
@@ -202,10 +203,12 @@ app.put("/updatePaket", (req, res) => {
   const namaPaket = req.body.namaPaket;
   const lamaCuci = req.body.lamaCuci;
   const harga = req.body.harga;
+  const diskon = req.body.diskon;
+  const flag = req.body.flag;
 
   db.query(
-    "UPDATE paket SET nama_paket = ?, lama_cuci = ?, harga = ? where id = ?",
-    [namaPaket, lamaCuci, harga, id],
+    "UPDATE paket SET nama_paket = ?, lama_cuci = ?, harga = ?, diskon = ?, flag = ? where id = ?",
+    [namaPaket, lamaCuci, harga, diskon, flag, id],
     (err, result) => {
       if (err) {
         console.log(err);

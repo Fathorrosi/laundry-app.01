@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Dashboard from './pages/dashboard/Dashboard';
 import Customer from './pages/customer/Customer';
 import Blast from './pages/blast/Blast';
+import Management from './pages/management/Management';
 
 function App() {
   return (
@@ -21,6 +22,9 @@ function App() {
               </Route>
               <Route exact path="/blast">
                 <Blast />
+              </Route>
+              <Route exact path="/management">
+                <Management />
               </Route>
             </Switch>
           </div>

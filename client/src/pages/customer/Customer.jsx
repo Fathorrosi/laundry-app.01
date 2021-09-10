@@ -146,7 +146,7 @@ export default function Customer() {
                         }} type="text" />
                     </div>
                     <div className="col-10">
-                        <label>Paket</label>
+                        <label>Paket Kiloan</label>
                     </div>
                     <div className="col-25-2">
                         <select onChange={(event) => {
