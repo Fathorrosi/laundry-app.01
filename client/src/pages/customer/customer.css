@@ -1,0 +1,92 @@
+.customer {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+.form-input {
+    background-color: rgb(180, 212, 255);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+input[type=text], [type=number], select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+label {
+    padding: 12px 12px 12px 0;
+    display: inline-block;
+}
+
+input[type=submit]:hover {
+    background-color: #45a049;
+}
+
+.container {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+
+input[type=submit] {
+    background-color: #04AA6D;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+    margin-left: 51.4%;
+    width: 27%;
+}
+
+input[type=submit]:hover {
+    background-color: #45a049;
+}
+
+input[type=submit]:disabled {
+    background-color: #6e6e6e;
+}
+
+.col-10 {
+    float: left;
+    width: 10%;
+    margin-top: 6px;
+    margin-left: 10px;
+}
+
+.col-25 {
+    float: left;
+    width: 25%;
+    margin-top: 6px;
+    margin-right: 50px;
+}
+
+.col-25-2 {
+    float: left;
+    width: 27.3%;
+    margin-top: 6px;
+    margin-right: 24px;
+}
+
+/* Clear floats after the columns */
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+
+@media screen and (max-width: 600px) {
+    .col-10, .col-25, .col-25-2, select, input[type=submit] {
+        width: 100%;
+        margin-top: 20;
+        margin-left: 0;
+    }
+}

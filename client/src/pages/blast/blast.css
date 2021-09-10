@@ -1,0 +1,123 @@
+.blast {
+    display: grid;
+}
+
+.blast-card {
+    display: grid;
+    grid-template-areas: 'message-table message-table message-table message-table barcode' 'message-table message-table message-table message-table barcode' 'report-table report-table broadcast-table broadcast-table log' 'report-table report-table broadcast-table broadcast-table log' 'report-table report-table broadcast-table broadcast-table report-btn' 'report-table report-table broadcast-table broadcast-table broadcast-btn';
+    grid-gap: 10px;
+    padding: 10px;
+}
+
+.blast-card>div {
+    font-size: 30px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    background-color: rgb(230, 254, 255);
+}
+
+.message-table {
+    grid-area: message-table;
+}
+
+.barcode {
+    grid-area: barcode;
+    width: auto;
+    text-align: center;
+    padding: 20px 0 0 0;
+}
+
+.blast h5 {
+    font-size: 15px;
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+.report-table {
+    grid-area: report-table;
+    display: flex;
+    flex-direction: column;
+}
+
+.report-table>div {
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.broadcast-table {
+    grid-area: broadcast-table;
+    display: flex;
+    flex-direction: column;
+}
+
+.broadcast-table>div {
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.log {
+    grid-area: log;
+    display: flex;
+    flex-direction: column;
+    padding: 0px 10px 10px;
+}
+
+.log>div {
+    grid-area: log;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.log textarea {
+    width: 90%;
+    height: 100%;
+    resize: none;
+}
+
+.broadcast-btn {
+    grid-area: broadcast-btn;
+    text-align: center;
+    background-color: #f18d09;
+    border-radius: 14px;
+    color: rgb(230, 254, 255);
+    font-size: 20px;
+    border: none;
+}
+
+.broadcast-btn:hover {
+    background-color: #df7f02;
+}
+
+.report-btn {
+    grid-area: report-btn;
+    text-align: center;
+    background-color: #f18d09;
+    border-radius: 14px;
+    color: rgb(230, 254, 255);
+    font-size: 20px;
+    border: none;
+}
+
+.report-btn:hover {
+    background-color: #df7f02;
+}
+
+.edit-message {
+    border: none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    background-color: #1478d4;
+    color: white;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.send {
+    color: green;
+}
+
+.not-send {
+    color: red;
+}

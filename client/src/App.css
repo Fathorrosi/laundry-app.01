@@ -1,0 +1,28 @@
+body {
+  background: linear-gradient(90deg, rgba(125, 210, 240, 1) 0%, rgba(170, 170, 255, 1) 47%, rgba(121, 174, 242, 1) 100%);
+}
+
+.content {
+  background-color: rgb(244, 251, 253);
+  font-size: 14px;
+  font-family: 'Roboto', sans-serif;
+  margin: 50px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 5px 0px #888888;
+}
+
+.page {
+  background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(189,222,231,1) 100%);
+  border-radius: 2px;
+  box-shadow: 0px 2px 5px 0px #888888;
+  padding: 10px 20px 10px 30px;
+}
+
+.container {
+  padding: 0px 20px 20px 20px;
+}
+
+.link{
+  text-decoration: none;
+  color: inherit;
+}
