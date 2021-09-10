@@ -1,25 +1,22 @@
 import './dataCard.css'
 import { FaCalendarAlt, FaCalendarDay, FaCheckCircle, FaRunning } from "react-icons/fa";
 import { useState, useEffect } from "react";
-import Axios from "axios";
 
-export default function DataCard() {
+export default function DataCard(props) {
     const [monthly, setMonthly] = useState(0);
     const [today, setToday] = useState(0);
     const [finish, setFinish] = useState(0);
     const [proses, setProses] = useState(0);
-    const [monthsName, setMonthsName] = useState('')
+    const [monthsName, setMonthsName] = useState('');
 
     const date = new Date();
     const m = date.getMonth() + 1;
 
     useEffect(() => {
-        Axios.get("http://localhost:3001/transactions").then((response) => {
-            initiateData(response.data);
-        });
+        initiateData(props.data);
         setMonthsName(date.toLocaleString('default', { month: 'long' }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [props.data])
 
     const initiateData = (data) => {
         let tempProses = 0;

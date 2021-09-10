@@ -13,7 +13,6 @@ export default function Management() {
     const [harga, setHarga] = useState(0)
     const [diskon, setDiskon] = useState(0)
     const [flag, setFlag] = useState(1)
-    const [no, setNo] = useState(0)
 
     useEffect(() => {
         Axios.get("http://localhost:3001/paket").then((response) => {
@@ -30,6 +29,14 @@ export default function Management() {
         }
     }
 
+    const getLastId = () => {
+        let id = 0;
+        for (let x of listPaket) {
+            id = x["id"];
+        }
+        return id + 1;
+    }
+
     const handleAdd = () => {
         Swal.fire({
             title: 'Apakah kamu yakin?',
@@ -39,19 +46,23 @@ export default function Management() {
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, Created!'
-        }).then(async (result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
                 Axios.post("http://localhost:3001/addPaket",
-                    { namaPaket: namaPaket, lamaCuci: lamaCuci, harga: harga, diskon: diskon, flag: flag });
-                await Swal.fire({
+                    { namaPaket: namaPaket, lamaCuci: lamaCuci, harga: harga, diskon: diskon, flag: flag }).then(
+                        () => {
+                            setListPaket([...listPaket, {
+                                id: getLastId(),
+                                nama_paket: namaPaket, lama_cuci: lamaCuci, harga: harga, diskon: diskon, flag: flag
+                            }])
+                        }
+                    );
+                Swal.fire({
                     icon: 'success',
                     title: 'Paket berhasil ditambahkan!!',
                     showConfirmButton: false,
                     timer: 1000
                 });
-                setTimeout(() => {
-                    window.location.reload(false);
-                }, 1500);
             }
         })
     }

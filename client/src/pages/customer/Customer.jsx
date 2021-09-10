@@ -5,6 +5,7 @@ import Axios from "axios";
 import Swal from 'sweetalert2'
 
 export default function Customer() {
+    const [dataTransaction, setDataTransaction] = useState([])
     const [ListPaket, setListPaket] = useState([]);
     const [listSatuan, setListSatuan] = useState([]);
     const [listKiloan, setListKiloan] = useState([]);
@@ -84,6 +85,20 @@ export default function Customer() {
             diskon: diskon,
             jumlahPakaian: jumlahPakaian,
             jenisSatuan: satuan
+        }).then(() => {
+            setDataTransaction({
+                nama: nama,
+                handphone: handphone,
+                jenis: jenis,
+                berat: berat,
+                paket: paket,
+                keterangan: keterangan,
+                lama_cuci: lama_cuci,
+                harga: harga,
+                diskon: diskon,
+                jumlahPakaian: jumlahPakaian,
+                jenisSatuan: satuan
+            })
         })
     }
 
@@ -105,8 +120,7 @@ export default function Customer() {
                     showConfirmButton: false,
                     timer: 1000
                 })
-                await window.location.reload(false);
-            }
+                }
         })
     };
 
@@ -207,7 +221,7 @@ export default function Customer() {
                     <input disabled={!validateForm()} onClick={addTransaction} type="submit" value="Submit" />
                 </div>
             </div>
-            <DataTable />
+            <DataTable data={dataTransaction} />
         </div>
     );
 }

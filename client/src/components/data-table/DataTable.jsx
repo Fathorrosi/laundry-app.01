@@ -3,6 +3,7 @@ import { DataGrid } from "@material-ui/data-grid";
 import { useState, useEffect } from "react";
 import Axios from "axios";
 import Swal from 'sweetalert2'
+import DataCard from "../data-card/DataCard";
 
 export default function DataTable(props) {
     const [data, setData] = useState([]);
@@ -11,11 +12,25 @@ export default function DataTable(props) {
         Axios.get("http://localhost:3001/transactions").then((response) => {
             setData(response.data);
         });
-    }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.data])
 
-    const updateTransaction = (id, nama, handphone, tgl_masuk) => {
+    const updateTransaction = async (id, nama, handphone, tgl_masuk) => {
         Axios.put("http://localhost:3001/update",
-            { id: id, nama: nama, handphone: handphone, tgl_masuk: tgl_masuk });
+            { id: id, nama: nama, handphone: handphone, tgl_masuk: tgl_masuk }).then(
+                async (result) => {
+                    if (result) {
+                        let tempData = data.slice()
+                        for (let x of tempData) {
+                            if (x["id"] === id) {
+                                x["status"] = "Selesai";
+                                setData(tempData);
+                                break;
+                            }
+                        }
+                    }
+                }
+            );
     };
 
     const formatter = (value) => {
@@ -40,9 +55,6 @@ export default function DataTable(props) {
                     showConfirmButton: false,
                     timer: 1000
                 })
-                setTimeout(() => {
-                    window.location.reload(false);
-                }, 1500);
             }
         })
     }
@@ -185,11 +197,12 @@ export default function DataTable(props) {
 
     return (
         <>
+            {props.isDashboard ? <DataCard data={data} /> : null}
             <h2>List Customers</h2>
             <div className="list-data">
                 <div style={{ height: 300, width: '100%' }}>
                     <DataGrid
-                        style={{fontSize:12, borderWidth:"2px", borderColor:"#b6b6b6", borderStyle:'solid'}}
+                        style={{ fontSize: 12, borderWidth: "2px", borderColor: "#b6b6b6", borderStyle: 'solid' }}
                         rows={data}
                         disableSelectionOnClick
                         columns={columns}
