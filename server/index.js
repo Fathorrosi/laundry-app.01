@@ -12,6 +12,9 @@ const io = require('socket.io')(server, {
   transports: ['websocket', 'polling']
 })
 
+let pesanReport;
+let pesanBroadcast;
+
 app.use(cors());
 app.use(express.json());
 
@@ -33,25 +36,26 @@ console.log = function (d) { //
 
 const sendReport = (nama, handphone, blastType, tgl_masuk) => {
   var pesan = '';
-  var pesanSingle = fs.readFileSync('./file/pesanSingle.txt', 'utf8');
-  var pesanBroadcast = fs.readFileSync('./file/pesanBroadcast.txt', 'utf8');
+  var reportMessage = pesanReport;
+  var broadcastMessage = pesanBroadcast;
   var nomor = handphone;
 
   if (blastType === '0') {
     wbm.start().then(async () => {
-      for (let i = 0; i < nomor.length; i++) {
-        pesan = pesanSingle.replace("(?)", nama[i])
-        nomor = handphone[i];
-        await wbm.send([nomor], pesan, tgl_masuk, blastType);
-      }
+      // for (let i = 0; i < nomor.length; i++) {
+      //   pesan = reportMessage.replace("(?)", nama[i])
+      //   nomor = handphone[i];
+      //   await wbm.sendTo([nomor], pesan, tgl_masuk, blastType);
+      // }
+      await wbm.send(nomor, reportMessage, tgl_masuk, blastType, nama);
       await wbm.end().then(result => {
         console.log(getTime() + ' ' + result)
       });
     }).catch(err => console.log(err));
   } else {
     wbm.start().then(async () => {
-      pesan = pesanBroadcast
-      await wbm.send(nomor, pesan, tgl_masuk, blastType);
+      pesan = broadcastMessage
+      await wbm.send(nomor, pesan, tgl_masuk, blastType, '');
       await wbm.end().then(result => {
         console.log(getTime() + ' ' + result)
       });
@@ -255,25 +259,50 @@ app.put("/update", async (req, res) => {
   // await sendReport(nama, handphone, '0', getDate(tgl_masuk));
 });
 
-
 app.get("/getMessage", (req, res) => {
-  var listMessage = []
-  var pesanSingle = fs.readFileSync('./file/pesanSingle.txt', 'utf8');
-  var pesanBroadcast = fs.readFileSync('./file/pesanBroadcast.txt', 'utf8');
-  listMessage.push(pesanSingle)
-  listMessage.push(pesanBroadcast)
-  res.send(JSON.stringify(listMessage));
+  db.query("select * FROM pesan", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      for (let x of result) {
+        if (x["tipe"] === 'report') {
+          pesanReport = x["konten"]
+        } else {
+          pesanBroadcast = x["konten"]
+        }
+      }
+      res.send(result);
+    }
+  });
 });
 
 app.put("/updateMessage", (req, res) => {
-  var tipe = req.body.tipe;
-  var message = req.body.message;
-  if (tipe === 'Single') {
-    fs.writeFileSync('./file/pesanSingle.txt', message);
-  } else {
-    fs.writeFileSync('./file/pesanBroadcast.txt', message);
-  }
-  res.send('Message is updated!!');
+  const id = req.body.id;
+  const konten = req.body.message;
+  db.query("update pesan set konten=? where id = ?", [konten, id], (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+app.post("/addMessage", (req, res) => {
+  const tipe = req.body.tipe;
+  const konten = req.body.message;
+
+  db.query(
+    "INSERT INTO pesan (tipe, konten) VALUES (?,?)",
+    [tipe, konten],
+    async (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send("Values Inserted");
+      }
+    }
+  );
 });
 
 app.put("/sendBroadcast", (req, res) => {

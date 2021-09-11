@@ -1,7 +1,6 @@
 import React from 'react'
 import "./blast.css";
 import { DataGrid } from "@material-ui/data-grid";
-import { blastData } from "./data"
 import { useState, useEffect } from "react";
 import Axios from "axios";
 import Swal from 'sweetalert2'
@@ -101,7 +100,7 @@ export default function Blast() {
         });
     }
 
-    const handleEdit = (tipe) => {
+    const handleEdit = (id) => {
         Swal.fire({
             input: 'textarea',
             inputLabel: 'Message',
@@ -112,16 +111,26 @@ export default function Blast() {
             showCancelButton: true
         }).then(value => {
             if (value.value !== undefined) {
-                Axios.put("http://localhost:3001/updateMessage", { message: value.value, tipe: tipe });
+                Axios.put("http://localhost:3001/updateMessage", { message: value.value, id: id }).then(
+                    async (result) => {
+                        if (result) {
+                            let tempData = message.slice()
+                            for (let x of tempData) {
+                                if (x["id"] === id) {
+                                    x["konten"] = value.value;
+                                    setMessage(tempData);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                );
                 Swal.fire({
                     icon: 'success',
                     title: 'Pesan berhasil diupdate!!',
                     showConfirmButton: false,
                     timer: 1000
                 })
-                setTimeout(() => {
-                    window.location.reload(false);
-                }, 1500);
             }
         })
     }
@@ -204,16 +213,7 @@ export default function Blast() {
     const columnsMsg = [
         { field: "id", headerName: "ID", width: 100 },
         { field: "tipe", headerName: "Tipe", width: 150 },
-        {
-            field: "pesan", headerName: "Pesan", width: 350,
-            renderCell: (params) => {
-                return (
-                    <>
-                        {message[(params.row.id) - 1]}
-                    </>
-                );
-            },
-        },
+        { field: "konten", headerName: "Konten", width: 350 },
         {
             field: "action",
             headerName: "Action",
@@ -221,8 +221,8 @@ export default function Blast() {
             renderCell: (params) => {
                 return (
                     <>
-                        <button onClick={() => handleEdit(params.row.tipe)} className="edit-message">Edit</button>
-                        <button onClick={() => handleView(message[(params.row.id) - 1])} className="edit-message">View</button>
+                        <button onClick={() => handleEdit(params.row.id)} className="edit-message">Edit</button>
+                        <button onClick={() => handleView(params.row.konten)} className="edit-message">View</button>
                     </>
                 );
             },
@@ -271,7 +271,7 @@ export default function Blast() {
                 <div className="message-table" style={{ height: 250, width: '100%' }}>
                     <DataGrid
                         style={{ fontSize: 12, borderWidth: "2px", borderColor: "#b6b6b6", borderStyle: 'solid' }}
-                        rows={blastData}
+                        rows={message}
                         disableSelectionOnClick
                         columns={columnsMsg}
                         pageSize={5}

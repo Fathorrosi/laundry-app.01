@@ -8,7 +8,6 @@ var rimraf = require("rimraf");
 const fs = require("fs");
 
 let browser = null;
-let totalExecute = 0;
 let page = null;
 let counter = { fails: 0, success: 0 }
 const tmpPath = path.resolve(__dirname, './tmp');
@@ -207,12 +206,16 @@ async function sendTo(phoneOrContact, message, tgl_masuk, blassType) {
  * @param {string} message Message to send to every phone number
  * Send same message to every phone number
  */
-async function send(phoneOrContacts, message, tgl_masuk, blassType) {
+async function send(phoneOrContacts, message, tgl_masuk, blassType, name) {
     console.log("Sending Message...\r");
-    totalExecute = 0;
-    for (let phoneOrContact of phoneOrContacts) {
-        totalExecute = totalExecute + 1;
-        await sendTo(phoneOrContact, message, tgl_masuk, blassType);
+    for (let i = 0; i < phoneOrContacts.length; i++) {
+        let pesan;
+        if (name === '') {
+            pesan = message;
+        } else {
+            pesan = message.replace("(?)", name[i])
+        }
+        await sendTo(phoneOrContacts[i], pesan, tgl_masuk, blassType);
     }
 }
 
