@@ -9,7 +9,7 @@ import {
 } from 'react-icons/ri';
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
-
+import { default as logo } from '../../assets/logo.svg';
 
 export default function Navbar() {
     const [selected, setSelected] = useState(localStorage.getItem("selectedMenu"))
@@ -24,7 +24,7 @@ export default function Navbar() {
         <div>
             <div className="navbar">
                 <div className="logo">
-                    <h2>Fuji Laundry</h2>
+                    <img src={logo} />
                 </div>
                 <ul>
                     <Link to="/" onClick={() => {

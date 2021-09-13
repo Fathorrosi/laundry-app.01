@@ -5,7 +5,12 @@
 }
 
 .navbar .logo {
-    color: rgb(24, 104, 209);
+    text-align: start;
+}
+
+.navbar .logo > img{
+    height: 70px;
+    width: 200px;
 }
 
 .navbar ul {
